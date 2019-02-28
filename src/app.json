@@ -1,0 +1,61 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/logs/main",
+    "pages/counter/main",
+    "pages/edit/main"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "每日段子",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#999",
+    "backgroundColor": "#fafafa",
+    "selectedColor": "#1296db",
+    "borderStyle": "white",
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/main",
+        "iconPath": "static/tabs/home.png",
+        "selectedIconPath": "static/tabs/home-active.png"
+      },
+      {
+        "text": "创作",
+        "pagePath": "pages/edit/main",
+        "iconPath": "static/tabs/edit.png",
+        "selectedIconPath": "static/tabs/edit-active.png"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/logs/main",
+        "iconPath": "static/tabs/me.png",
+        "selectedIconPath": "static/tabs/me-active.png"
+      }
+    ],
+    "items": [
+      {
+        "name": "首页",
+        "pagePath": "pages/index/main",
+        "icon": "static/tabs/home.png",
+        "activeIcon": "static/tabs/home-active.png"
+      },
+      {
+        "name": "创作",
+        "pagePath": "pages/edit/main",
+        "icon": "static/tabs/edit.png",
+        "activeIcon": "static/tabs/edit-active.png"
+      },
+      {
+        "name": "我的",
+        "pagePath": "pages/logs/main",
+        "icon": "static/tabs/me.png",
+        "activeIcon": "static/tabs/me-active.png"
+      }
+    ],
+    "position": "bottom"
+  }
+}
