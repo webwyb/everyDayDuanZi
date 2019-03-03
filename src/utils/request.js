@@ -1,49 +1,51 @@
 /**
  * Created by wuyanbin on 2019/3/2.
  */
-const baseApi = "https://duanzi.fengtianhe.cn/api/"
-const Promise = require('es6-promise').Promise
+const baseApi = "https://duanzi.fengtianhe.cn/api/";
+const Promise = require("es6-promise").Promise;
 
 function wxPromisify(fn) {
   return function(obj = {}) {
     return new Promise((resolve, reject) => {
       obj.success = function(res) {
         //成功 (只返回res.data)
-        resolve(res.data)
-      }
+        resolve(res.data);
+      };
       obj.fail = function(res) {
         //失败
-        reject(res)
-      }
-      fn(obj)
-    })
-  }
+        reject(res);
+      };
+      fn(obj);
+    });
+  };
 }
+
 //无论promise对象最后状态如何都会执行
 Promise.prototype.finally = function(callback) {
   let P = this.constructor;
   return this.then(
     value => P.resolve(callback()).then(() => value),
     reason => P.resolve(callback()).then(() => {
-      throw reason
+      throw reason;
     })
   );
 };
+
 /**
  * 微信请求get方法
  * url
  * data 以对象的格式传入
  */
 function getRequest(url, data) {
-  let getRequest = wxPromisify(wx.request)
+  let getRequest = wxPromisify(wx.request);
   return getRequest({
     url: baseApi + url,
-    method: 'GET',
+    method: "GET",
     data: data,
     header: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     }
-  })
+  });
 }
 
 /**
@@ -52,15 +54,15 @@ function getRequest(url, data) {
  * data 以对象的格式传入
  */
 function postRequest(url, data) {
-  let postRequest = wxPromisify(wx.request)
+  let postRequest = wxPromisify(wx.request);
   return postRequest({
     url: baseApi + url,
-    method: 'POST',
+    method: "POST",
     data: data,
     header: {
       "content-type": "application/x-www-form-urlencoded"
-    },
-  })
+    }
+  });
 }
 
 /**
@@ -68,14 +70,14 @@ function postRequest(url, data) {
  */
 function getRquestUrl(url, data) {
   var signArr = [];
-  for(var x in data) {
-    var sign = x + '=' + data[x];
-    signArr.push(sign)
+  for (var x in data) {
+    var sign = x + "=" + data[x];
+    signArr.push(sign);
   }
 
-  var signString = '';
-  for(var x in signArr) {
-    if(parseInt(x) + 1 == 1) {
+  var signString = "";
+  for (var x in signArr) {
+    if (parseInt(x) + 1 == 1) {
       signString += signArr[x].toString();
     } else {
       signString += "&" + signArr[x].toString();
@@ -85,7 +87,7 @@ function getRquestUrl(url, data) {
 }
 
 /*文件上传*/
-function uploadFile(url,files,name,data) {
+function uploadFile(url, files, name, data) {
   return new Promise((resolve, reject) => {
     wx.uploadFile({
       url: url,
@@ -93,23 +95,23 @@ function uploadFile(url,files,name,data) {
       name: name,
       formData: data,
       success: (res => {
-        if(res.statusCode === 200) {
+        if (res.statusCode === 200) {
           //200: 服务端业务处理正常结束
-          resolve(res)
+          resolve(res);
         } else {
-          reject(res)
+          reject(res);
         }
       }),
       fail: (res => {
-        reject(res)
+        reject(res);
       })
-    })
-  })
+    });
+  });
 }
 
 module.exports = {
   postRequest: postRequest,
   getRequest: getRequest,
   getRquestUrl: getRquestUrl,
-  uploadFile:uploadFile
-}
+  uploadFile: uploadFile
+};

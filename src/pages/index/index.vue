@@ -5,9 +5,9 @@
       <!--内容信息-->
       <div class="cu-item shadow">
         <div class='padding-sm' @click="goDetail(item.id)">
-          <div class='radius text-center shadow-blur bg-red'>
+          <div class='radius text-center shadow-blur bg-gradual-green'>
             <div class='padding text-white'>
-              <div class='text-df text-left'>
+              <div class='text-lg text-left'>
                 <wxParse :content="item.content"/>
               </div>
             </div>
@@ -21,9 +21,9 @@
                  :style="{'background-image':'url(' + 'https://image.weilanwl.com/img/square-4.jpg' + ')'}">
             </div>
             <div class='content flex-sub'>
-            <div class='text-grey'>{{fillName(item)}}</div>
+            <div class='text-grey'>{{nickName}}</div>
             <div class='text-gray text-sm flex justify-between'>
-            {{fillTime(item)}}
+            {{createDate}}
             </div>
             </div>
             <!--点赞图标-->
@@ -54,10 +54,11 @@
     data() {
       return {
         items: [],
+        nickName: '不愿透漏姓名的段友',
+        createDate: '2019-03-01',
         isShowLoadMore: false,
         page: 1,
         totalPage: 1,
-        article: '<div>我是HTML代码</div>'
       };
     },
 
@@ -66,9 +67,22 @@
       wxParse
     },
     onShareAppMessage(res) {
+      // wx.showLoading({
+      //   title: "加载中"
+      // });
       return {
         title: "每一个段子都值得被尊重",
-        path: `/pages/detail/main?id=${res.target.dataset.id}`
+        path: `/pages/detail/main?id=${res.target.dataset.id}`,
+        success: function (res) {
+          // 转发成功
+          // wx.hideLoading()
+          console.log('成功', res);
+        },
+        fail: function (res) {
+          // 转发失败
+          // wx.hideLoading()
+          console.log('失败', res);
+        }
       };
     },
     // 上拉刷新
@@ -101,6 +115,9 @@
     methods: {
       async getArticle(page) {
         let self = this;
+        wx.showLoading({
+          title: "加载中"
+        });
         await self.$http.getRequest("articles", {
           page: page,
           pageSize: "5"
@@ -113,6 +130,8 @@
           }
         }).catch((err) => {
           console.log("请求到的苏剧", err);
+        }).finally(() => {
+          wx.hideLoading();
         });
       },
       toTop() {
@@ -123,18 +142,7 @@
       },
       // 查看详情
       goDetail(id = "1") {
-        wx.navigateTo({ url: `/pages/detail/main?id=${id}` });
-      },
-      fillPic(src){
-        console.log(src)
-        return src ? src : 'https://image.weilanwl.com/img/square-4.jpg';
-      },
-      fillName(item){
-        console.log(item);
-        return item.userInfo.avatarUrl ? item.userInfo.avatarUrl : '佚名'
-      },
-      fillTime(item){
-        return item ? formatTime(item.userInfo.time) : formatTime(new Date());
+        wx.navigateTo({ url: `/pages/detail/main?id=${id}`});
       }
     }
   };
@@ -159,8 +167,8 @@
     right: 20px;
     bottom: 40px;
     z-index: 10;
-    width: 33px;
-    height: 33px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     border: 1px solid #B9B9B9;
   }

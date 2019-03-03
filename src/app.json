@@ -17,26 +17,20 @@
   "tabBar": {
     "color": "#999",
     "backgroundColor": "#fafafa",
-    "selectedColor": "#1296db",
+    "selectedColor": "#3bb539",
     "borderStyle": "white",
     "list": [
       {
         "text": "首页",
         "pagePath": "pages/index/main",
         "iconPath": "static/tabs/home.png",
-        "selectedIconPath": "static/tabs/home-active.png"
-      },
-      {
-        "text": "创作",
-        "pagePath": "pages/edit/main",
-        "iconPath": "static/tabs/edit.png",
-        "selectedIconPath": "static/tabs/edit-active.png"
+        "selectedIconPath": "static/tabs/home-active-green.png"
       },
       {
         "text": "我的",
         "pagePath": "pages/me/main",
         "iconPath": "static/tabs/me.png",
-        "selectedIconPath": "static/tabs/me-active.png"
+        "selectedIconPath": "static/tabs/me-active-green.png"
       }
     ],
     "items": [
@@ -44,19 +38,13 @@
         "name": "首页",
         "pagePath": "pages/index/main",
         "icon": "static/tabs/home.png",
-        "activeIcon": "static/tabs/home-active.png"
-      },
-      {
-        "name": "创作",
-        "pagePath": "pages/edit/main",
-        "icon": "static/tabs/edit.png",
-        "activeIcon": "static/tabs/edit-active.png"
+        "activeIcon": "static/tabs/home-active-green.png"
       },
       {
         "name": "我的",
         "pagePath": "pages/me/main",
         "icon": "static/tabs/me.png",
-        "activeIcon": "static/tabs/me-active.png"
+        "activeIcon": "static/tabs/me-active-green.png"
       }
     ],
     "position": "bottom"
