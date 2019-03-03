@@ -1,3 +1,4 @@
 {
-  "navigationBarTitleText": "查看启动日志啊啊啊"
+  "navigationBarTitleText": "查看启动日志啊啊啊",
+  "enablePullDownRefresh": true
 }

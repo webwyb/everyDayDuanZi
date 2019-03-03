@@ -1,8 +1,14 @@
-import Vue from 'vue'
-import App from './App'
+import Vue from "vue";
+import App from "./App";
+import "./global.css";
 
-Vue.config.productionTip = false
-App.mpType = 'app'
+Vue.config.productionTip = false;
+App.mpType = "app";
 
-const app = new Vue(App)
-app.$mount()
+// 引用api 文件
+import http from './utils/request'
+// 将API绑定为全局
+Vue.prototype.$http = http
+
+const app = new Vue(App);
+app.$mount();

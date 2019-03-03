@@ -3,7 +3,10 @@
     "pages/index/main",
     "pages/logs/main",
     "pages/counter/main",
-    "pages/edit/main"
+    "pages/edit/main",
+    "pages/me/main",
+    "pages/me/about/main",
+    "pages/detail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -31,7 +34,7 @@
       },
       {
         "text": "我的",
-        "pagePath": "pages/logs/main",
+        "pagePath": "pages/me/main",
         "iconPath": "static/tabs/me.png",
         "selectedIconPath": "static/tabs/me-active.png"
       }
@@ -51,7 +54,7 @@
       },
       {
         "name": "我的",
-        "pagePath": "pages/logs/main",
+        "pagePath": "pages/me/main",
         "icon": "static/tabs/me.png",
         "activeIcon": "static/tabs/me-active.png"
       }
