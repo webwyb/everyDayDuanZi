@@ -7,7 +7,7 @@
           <div class='radius text-center shadow-blur bg-gradual-green'>
             <div class='padding text-white'>
               <div class='text-lg text-left'>
-                <wxParse :content="content"/>
+                <wxParse :content="content" />
               </div>
             </div>
           </div>
@@ -35,13 +35,16 @@
         </div>
       </div>
     </div>
+    <!--海报-->
+    <canvas canvas-id='canvas' class='canvas' :style="{height: windowHeight + 'px'}"/>
     <!--返回首页-->
     <div class="goHome" @click="goHome"><span class='icon-home xl text-gray'></span></div>
   </div>
 </template>
 
 <script>
-  import wxParse from 'mpvue-wxparse'
+  import wxParse from "mpvue-wxparse";
+
   export default {
     data() {
       return {
@@ -53,6 +56,7 @@
     },
     components: {
       wxParse
+      // painter
     },
     onShareAppMessage() {
       // wx.showLoading({
@@ -62,15 +66,15 @@
         title: "每一个段子都值得被尊重",
         path: `/pages/detail/main?id=${this.id}`,
         imageUrl: "",
-        success: function (res) {
+        success: function(res) {
           // 转发成功
           // wx.hideLoading()
-          console.log('成功', res);
+          console.log("成功", res);
         },
-        fail: function (res) {
+        fail: function(res) {
           // 转发失败
           // wx.hideLoading()
-          console.log('失败', res);
+          console.log("失败", res);
         }
       };
     },
@@ -100,8 +104,8 @@
       //  返回首页
       goHome() {
         wx.reLaunch({
-          url: '/pages/index/main'
-        })
+          url: "/pages/index/main"
+        });
       }
     }
   };
