@@ -1,6 +1,8 @@
 <template>
   <div>
     <!--内容-->
+    <div style="background: red">storage</div>
+    <button open-type="getUserInfo" lang="zh_CN" @click="onGotUserInfo">获取用户信息</button>
     <div class="cu-card case" v-for="item in items" :key="item.id">
       <!--内容信息-->
       <div class="cu-item shadow">
@@ -8,7 +10,7 @@
           <div class='radius text-center shadow-blur bg-gradual-green'>
             <div class='padding text-white'>
               <div class='text-lg text-left'>
-                <wxParse :content="item.content"/>
+                <wxParse :content="item.content" />
               </div>
             </div>
           </div>
@@ -21,14 +23,17 @@
                  :style="{'background-image':'url(' + 'https://image.weilanwl.com/img/square-4.jpg' + ')'}">
             </div>
             <div class='content flex-sub'>
-            <div class='text-grey'>{{nickName}}</div>
-            <div class='text-gray text-sm flex justify-between'>
-            {{createDate}}
-            </div>
+              <div class='text-grey'>{{nickName}}</div>
+              <div class='text-gray text-sm flex justify-between'>
+                {{createDate}}
+              </div>
             </div>
             <!--点赞图标-->
-            <div class="text-gray text-xxl flex-direction-row flex">
-              <!--<div><span class='icon-appreciate lg text-gray margin-lr-xs'></span></div>-->
+            <div class="text-gray text-xxl flex-direction-row flex" style="align-items: center">
+              <div @click="giveGood(item)">
+                <span class='icon-appreciatefill lg text-gray margin-lr-xs' v-if="item.goodIconHasClicked"></span>
+                <span class="icon-appreciate lg text-gray margin-lr-xs" v-else></span>
+              </div>
               <div>
                 <button open-type="share" :data-id="item.id"><span
                   class="icon-share lg text-gray margin-lr-xs"></span></button>
@@ -47,18 +52,39 @@
 
 <script>
   import loading from "@/components/loading";
-  import {formatTime} from "@/utils/index";
-  import wxParse from 'mpvue-wxparse'
+  import { formatTime } from "@/utils/index";
+  import wxParse from "mpvue-wxparse";
 
   export default {
     data() {
       return {
-        items: [],
-        nickName: '不愿透漏姓名的段友',
-        createDate: '2019-03-01',
+        items: [
+          {
+            id: '1',
+            content: 'wuyanbin',
+            nickName: '111',
+            createDate: '2092-3323-23',
+            goodIconHasClicked: false
+          },{
+            id: '2',
+            content: 'wuyanbin',
+            nickName: '111',
+            createDate: '2092-3323-23',
+            goodIconHasClicked: false
+          },{
+            id: '3',
+            content: 'wuyanbin',
+            nickName: '111',
+            createDate: '2092-3323-23',
+            goodIconHasClicked: false
+          }
+        ],
+        nickName: "不愿透漏姓名的段友",
+        createDate: "2019-03-01",
         isShowLoadMore: false,
         page: 1,
         totalPage: 1,
+        goodIconHasClicked: true
       };
     },
 
@@ -73,15 +99,15 @@
       return {
         title: "每一个段子都值得被尊重",
         path: `/pages/detail/main?id=${res.target.dataset.id}`,
-        success: function (res) {
+        success: function(res) {
           // 转发成功
           // wx.hideLoading()
-          console.log('成功', res);
+          console.log("成功", res);
         },
-        fail: function (res) {
+        fail: function(res) {
           // 转发失败
           // wx.hideLoading()
-          console.log('失败', res);
+          console.log("失败", res);
         }
       };
     },
@@ -110,9 +136,11 @@
       }
     },
     mounted() {
-      this.getArticle(1);
+      this.wxlogin();
+      // this.getArticle(1);
     },
     methods: {
+      // 获取文章
       async getArticle(page) {
         let self = this;
         wx.showLoading({
@@ -134,6 +162,7 @@
           wx.hideLoading();
         });
       },
+      // 返回顶部
       toTop() {
         wx.pageScrollTo({
           scrollTop: 0,
@@ -142,7 +171,51 @@
       },
       // 查看详情
       goDetail(id = "1") {
-        wx.navigateTo({ url: `/pages/detail/main?id=${id}`});
+        wx.navigateTo({ url: `/pages/detail/main?id=${id}` });
+      },
+      // 登录
+      wxlogin() {
+        let self = this;
+        wx.login({
+          success(res) {
+            if (res.code) {
+              // 发起网络请求
+              console.log("发起网络请求", res.code);
+              self.$http.getRequest("users/login", {
+                code: res.code
+              }).then((res) => {
+                console.log("发起resres网络请求", res);
+                mpvue.setStorageSync("token", res.data.token);
+                self.getArticle(1);
+              });
+            } else {
+              console.log("登录失败！" + res.errMsg);
+            }
+          }
+        });
+      },
+      //  获取用户公开数据
+      onGotUserInfo() {
+        let self = this;
+        wx.getUserInfo({
+          withCredentials: true,
+          success(res) {
+            console.log("获取的用户信息", res);
+            self.$http.postRequest("users", {
+              iv: res.iv,
+              encryptData: res.encryptedData
+            }).then((res) => {
+              console.log("登录陈工", res);
+            });
+          }
+        });
+      },
+      // 点赞
+      giveGood(item) {
+        // console.log("当亲的id", id);
+        // let self = this;
+        // self.goodIconHasClicked = !self.goodIconHasClicked;
+        item.goodIconHasClicked = !item.goodIconHasClicked;
       }
     }
   };

@@ -43,7 +43,8 @@ function getRequest(url, data) {
     method: "GET",
     data: data,
     header: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "token": mpvue.getStorageSync('token') ? mpvue.getStorageSync('token') : ""
     }
   });
 }
@@ -60,7 +61,8 @@ function postRequest(url, data) {
     method: "POST",
     data: data,
     header: {
-      "content-type": "application/x-www-form-urlencoded"
+      "content-type": "application/x-www-form-urlencoded",
+      "token": mpvue.getStorageSync('token') ? mpvue.getStorageSync('token') : ""
     }
   });
 }
