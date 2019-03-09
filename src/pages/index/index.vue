@@ -1,8 +1,7 @@
 <template>
   <div>
     <!--内容-->
-    <div style="background: red">storage</div>
-    <button open-type="getUserInfo" lang="zh_CN" @click="onGotUserInfo">获取用户信息</button>
+    <!--<button open-type="getUserInfo" lang="zh_CN" @click="onGotUserInfo">获取用户信息</button>-->
     <div class="cu-card case" v-for="item in items" :key="item.id">
       <!--内容信息-->
       <div class="cu-item shadow">
@@ -18,7 +17,7 @@
         <!--用户信息-->
         <div class="cu-list menu menu-avatar">
           <div class="cu-item">
-            <!--用户信息 :style="{'background-image':'url(' + fillPic(item.userInfo.avatarUrl) + ')'}-->
+            <!--用户信息-->
             <div class="cu-avatar round lg"
                  :style="{'background-image':'url(' + 'https://image.weilanwl.com/img/square-4.jpg' + ')'}">
             </div>
@@ -30,9 +29,12 @@
             </div>
             <!--点赞图标-->
             <div class="text-gray text-xxl flex-direction-row flex" style="align-items: center">
-              <div @click="giveGood(item)">
-                <span class='icon-appreciatefill lg text-gray margin-lr-xs' v-if="item.goodIconHasClicked"></span>
+              <div @click="giveGood(item)" style="padding-right: 8px">
+                <span class='icon-appreciatefill lg text-gray margin-lr-xs' v-if="item.isLike"></span>
                 <span class="icon-appreciate lg text-gray margin-lr-xs" v-else></span>
+              </div>
+              <div @click="sharePic(item.id)" style="padding-right: 3px">
+                <span class="icon-pic lg text-gray margin-lr-xs"></span>
               </div>
               <div>
                 <button open-type="share" :data-id="item.id"><span
@@ -58,33 +60,12 @@
   export default {
     data() {
       return {
-        items: [
-          {
-            id: '1',
-            content: 'wuyanbin',
-            nickName: '111',
-            createDate: '2092-3323-23',
-            goodIconHasClicked: false
-          },{
-            id: '2',
-            content: 'wuyanbin',
-            nickName: '111',
-            createDate: '2092-3323-23',
-            goodIconHasClicked: false
-          },{
-            id: '3',
-            content: 'wuyanbin',
-            nickName: '111',
-            createDate: '2092-3323-23',
-            goodIconHasClicked: false
-          }
-        ],
+        items: [],
         nickName: "不愿透漏姓名的段友",
         createDate: "2019-03-01",
         isShowLoadMore: false,
         page: 1,
-        totalPage: 1,
-        goodIconHasClicked: true
+        totalPage: 1
       };
     },
 
@@ -137,9 +118,13 @@
     },
     mounted() {
       this.wxlogin();
-      // this.getArticle(1);
+      this.getArticle(1);
     },
     methods: {
+      // 生成图片
+      sharePic(id) {
+        wx.navigateTo({ url: `/pages/painter/main?id=${id}` });
+      },
       // 获取文章
       async getArticle(page) {
         let self = this;
@@ -148,7 +133,7 @@
         });
         await self.$http.getRequest("articles", {
           page: page,
-          pageSize: "5"
+          pageSize: 10
         }).then((res) => {
           self.totalPage = res.data.totalPage;
           if (page === 1) {
@@ -180,13 +165,12 @@
           success(res) {
             if (res.code) {
               // 发起网络请求
-              console.log("发起网络请求", res.code);
+              // console.log("发起网络请求", res.code);
               self.$http.getRequest("users/login", {
                 code: res.code
               }).then((res) => {
-                console.log("发起resres网络请求", res);
+                // console.log("发起resres网络请求", res);
                 mpvue.setStorageSync("token", res.data.token);
-                self.getArticle(1);
               });
             } else {
               console.log("登录失败！" + res.errMsg);
@@ -215,7 +199,15 @@
         // console.log("当亲的id", id);
         // let self = this;
         // self.goodIconHasClicked = !self.goodIconHasClicked;
-        item.goodIconHasClicked = !item.goodIconHasClicked;
+        let self = this;
+        if (!item.isLike) {
+          self.$http.postRequest(`articles/like/${item.id}`).then(() => {
+            // item.isLike = !item.isLike;
+            item.isLike = true;
+          });
+        } else {
+          console.log("已经喜欢了");
+        }
       }
     }
   };

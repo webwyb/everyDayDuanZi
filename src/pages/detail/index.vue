@@ -35,8 +35,6 @@
         </div>
       </div>
     </div>
-    <!--海报-->
-    <canvas canvas-id='canvas' class='canvas' :style="{height: windowHeight + 'px'}"/>
     <!--返回首页-->
     <div class="goHome" @click="goHome"><span class='icon-home xl text-gray'></span></div>
   </div>
@@ -51,12 +49,11 @@
         content: "",
         nickName: "不愿透漏姓名的段友",
         createDate: "2019-03-01",
-        id: ""
+        id: "",
       };
     },
     components: {
       wxParse
-      // painter
     },
     onShareAppMessage() {
       // wx.showLoading({
@@ -106,7 +103,7 @@
         wx.reLaunch({
           url: "/pages/index/main"
         });
-      }
+      },
     }
   };
 </script>

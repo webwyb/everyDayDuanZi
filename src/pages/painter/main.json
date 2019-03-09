@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "图片绘制",
+  "usingComponents": {
+    "canvasdrawer": "../../../static/canvasdrawer/canvasdrawer"
+  }
+}
