@@ -3,7 +3,7 @@
     <!--海报-->
     <img :src="shareImage" class="share-image" />
     <canvasdrawer :painting="painting" @getImage="eventGetImage" />
-    <!--<button @click="eventDraw">绘制</button>-->
+    <button @click="eventDraw">重新绘制</button>
     <button @click="eventSave">保存到相册</button>
   </div>
 </template>
@@ -15,11 +15,16 @@
       return {
         painting: {},
         shareImage: "",
-        content: ""
+        content: "",
+        id: "",
+        userAvatarUrl: "",
+        userNickName: ""
       };
     },
     mounted() {
       this.id = this.$root.$mp.query.id;
+      this.userNickName = this.$root.$mp.query.userNickName;
+      this.userAvatarUrl = this.$root.$mp.query.userAvatarUrl;
       this.getArticleDetail(this.id);
     },
     methods: {
@@ -30,7 +35,7 @@
         });
         self.$http.getRequest(`articles/${id}`).then((res) => {
           // this.content = res.data.content;
-          self.eventDraw(res.data.content)
+          self.eventDraw(res.data.content);
         }).catch((err) => {
           console.log(err);
         }).finally(() => {
@@ -48,7 +53,7 @@
           views: [
             {
               type: "image",
-              url: "http://miniapp.wuyanbin.top/1531103986231.jpeg", // 背景
+              url: "https://duanzi.fengtianhe.cn/assets/images/share.png", // 背景
               top: 0,
               left: 0,
               width: 375,
@@ -56,7 +61,7 @@
             },
             {
               type: "image",
-              url: "http://miniapp.wuyanbin.top/64.jpeg", //头像
+              url: this.userAvatarUrl, //头像
               top: 27.5,
               left: 29,
               width: 55,
@@ -64,7 +69,7 @@
             },
             {
               type: "image",
-              url: "http://miniapp.wuyanbin.top/1531401349117.jpeg", //头像框
+              url: "https://duanzi.fengtianhe.cn/assets/images/tc1.png", //头像框
               top: 27.5,
               left: 29,
               width: 55,
@@ -72,7 +77,7 @@
             },
             {
               type: "text",
-              content: "您的好友【梦见君笑】对你说:",
+              content: `您的好友【${this.userNickName}】对你说:`,
               fontSize: 16,
               color: "#402D16",
               textAlign: "left",
@@ -91,7 +96,7 @@
             },
             {
               type: "image",
-              url: "https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531385366950.jpeg", // 商品图片
+              url: "https://duanzi.fengtianhe.cn/assets/images/tc2.png", // 商品图片
               top: 136,
               left: 42.5,
               width: 290,
@@ -113,7 +118,7 @@
             },
             {
               type: "image",
-              url: "http://miniapp.wuyanbin.top/gh_d3c6e52681b6_258.jpg", //二维码
+              url: "https://duanzi.fengtianhe.cn/assets/images/tc2.png", //二维码
               top: 443,
               left: 85,
               width: 68,
@@ -171,8 +176,8 @@
       },
       eventGetImage(event) {
         console.log("绘制的文本信息", event);
-        wx.hideLoading();
         this.shareImage = event.target.tempFilePath;
+        wx.hideLoading();
         // const { tempFilePath, errMsg } = event.target;
         // if (errMsg === "canvasdrawer:ok") {
         //   console.log("tempFilePath", tempFilePath);
@@ -186,7 +191,7 @@
           filePath: this.shareImage,
           success(res) {
             wx.showToast({
-              title: "保存图片成功,快去分享吧",
+              title: "保存图片成功",
               icon: "success",
               duration: 2000
             });

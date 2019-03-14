@@ -14,6 +14,7 @@
             </div>
           </div>
         </div>
+        <!--todo:-->
         <!--用户信息-->
         <div class="cu-list menu menu-avatar">
           <div class="cu-item">
@@ -33,9 +34,12 @@
                 <span class='icon-appreciatefill lg text-gray margin-lr-xs' v-if="item.isLike"></span>
                 <span class="icon-appreciate lg text-gray margin-lr-xs" v-else></span>
               </div>
-              <div @click="sharePic(item.id)" style="padding-right: 3px">
-                <span class="icon-pic lg text-gray margin-lr-xs"></span>
-              </div>
+              <!--@click="sharePic(item.id)" -->
+              <!--<div style="padding-right: 3px">-->
+                <!--<button open-type="getUserInfo" lang="zh_CN" @click="onGotUserInfo(item)">-->
+                  <!--<span class="icon-pic lg text-gray margin-lr-xs"></span>-->
+                <!--</button>-->
+              <!--</div>-->
               <div>
                 <button open-type="share" :data-id="item.id"><span
                   class="icon-share lg text-gray margin-lr-xs"></span></button>
@@ -65,7 +69,10 @@
         createDate: "2019-03-01",
         isShowLoadMore: false,
         page: 1,
-        totalPage: 1
+        totalPage: 1,
+        // 当前用户的信息
+        userNickName: "",
+        userAvatarUrl: ""
       };
     },
 
@@ -123,7 +130,7 @@
     methods: {
       // 生成图片
       sharePic(id) {
-        wx.navigateTo({ url: `/pages/painter/main?id=${id}` });
+        wx.navigateTo({ url: `/pages/painter/main?id=${id}&userNickName=${this.userNickName}&userAvatarUrl=${this.userAvatarUrl}` });
       },
       // 获取文章
       async getArticle(page) {
@@ -165,11 +172,9 @@
           success(res) {
             if (res.code) {
               // 发起网络请求
-              // console.log("发起网络请求", res.code);
               self.$http.getRequest("users/login", {
                 code: res.code
               }).then((res) => {
-                // console.log("发起resres网络请求", res);
                 mpvue.setStorageSync("token", res.data.token);
               });
             } else {
@@ -179,30 +184,34 @@
         });
       },
       //  获取用户公开数据
-      onGotUserInfo() {
+      onGotUserInfo(item) {
         let self = this;
-        wx.getUserInfo({
-          withCredentials: true,
-          success(res) {
-            console.log("获取的用户信息", res);
-            self.$http.postRequest("users", {
-              iv: res.iv,
-              encryptData: res.encryptedData
-            }).then((res) => {
-              console.log("登录陈工", res);
-            });
-          }
-        });
+        if (!mpvue.getStorageSync("nickName") || !mpvue.setStorageSync("avatarUrl")) {
+          wx.getUserInfo({
+            withCredentials: true,
+            success(res) {
+              console.log("获取的用户信息", res);
+              self.userNickName = res.userInfo.nickName;
+              self.userAvatarUrl = res.userInfo.avatarUrl;
+              mpvue.setStorageSync("nickName", res.userInfo.nickName);
+              mpvue.setStorageSync("avatarUrl", res.userInfo.avatarUrl);
+              self.$http.postRequest("users", {
+                iv: res.iv,
+                encryptData: res.encryptedData
+              }).then((res) => {
+                console.log("登录陈工", res);
+              });
+            }
+          });
+        } else {
+          self.sharePic(item.id, self.userNickName, self.userAvatarUrl);
+        }
       },
       // 点赞
       giveGood(item) {
-        // console.log("当亲的id", id);
-        // let self = this;
-        // self.goodIconHasClicked = !self.goodIconHasClicked;
         let self = this;
         if (!item.isLike) {
           self.$http.postRequest(`articles/like/${item.id}`).then(() => {
-            // item.isLike = !item.isLike;
             item.isLike = true;
           });
         } else {
@@ -220,6 +229,10 @@
 
   button {
     background-color: #fff;
+    margin-left: 0;
+    margin-right: 0;
+    padding-right: 0;
+    padding-left: 0;
   }
 
   .toTop {

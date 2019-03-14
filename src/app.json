@@ -1,9 +1,6 @@
 {
   "pages": [
     "pages/index/main",
-    "pages/logs/main",
-    "pages/counter/main",
-    "pages/edit/main",
     "pages/me/main",
     "pages/me/about/main",
     "pages/painter/main",

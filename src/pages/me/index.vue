@@ -7,19 +7,32 @@
       <div class='text-xl margin-top-xs'>
         <open-data type="userNickName"></open-data>
       </div>
+      <!--todo:-->
       <image src='https://image.weilanwl.com/gif/wave.gif' mode='scaleToFill' class='gif-wave'></image>
     </div>
     <!--创作和点赞详情-->
     <div class='padding flex text-center text-grey bg-white shadow-warp'>
       <div class='flex flex-sub flex-direction solid-right'>
-        <div class="text-xxl text-orange">{{createNum}}</div>
+        <div class="text-xxl text-orange">
+          <AnimatedNumber
+            :value="createNum"
+            :precision="2"
+          >
+          </AnimatedNumber>
+        </div>
         <div class="margin-top-sm">
           <text class='icon-attentionfill'></text>
           创作
         </div>
       </div>
       <div class='flex flex-sub flex-direction'>
-        <div class="text-xxl text-blue">{{getGoodNum}}</div>
+        <div class="text-xxl text-blue">
+          <AnimatedNumber
+            :value="getGoodNum"
+            :precision="2"
+          >
+          </AnimatedNumber>
+        </div>
         <div class="margin-top-sm">
           <text class='icon-favorfill'></text>
           获赞
@@ -29,12 +42,12 @@
     <!--链接页面-->
     <div class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg">
       <div class="cu-item arrow">
-        <div class='content'>
+        <div class='content' @click="goMyCreate">
           <text class='icon-github text-grey'></text>
           <text class='text-grey'>我的创作</text>
         </div>
       </div>
-      <div class="cu-item arrow">
+      <div class="cu-item arrow" @click="goAdvise">
         <div class='content'>
           <text class='icon-writefill text-cyan'></text>
           <text class='text-grey'>意见反馈</text>
@@ -51,36 +64,49 @@
 </template>
 
 <script>
+  import AnimatedNumber from "@gaomd/mpvue-animated-number";
+
   export default {
     name: "index",
     data() {
-      return{
-        createNum: 100,
-        getGoodNum: 200
-      }
+      return {
+        createNum: 0,
+        getGoodNum: 0
+      };
     },
-    onShow(){
-
+    components: {
+      AnimatedNumber
     },
-    onPullDownRefresh: function(){
-      // wx.startPullDownRefresh()
-      wx.showNavigationBarLoading() //在标题栏中显示加载
+    onPullDownRefresh: function() {
+      let self = this;
+      self.createNum = 10;
+      self.getGoodNum = 10;
+      wx.showNavigationBarLoading(); //在标题栏中显示加载
       setTimeout(function() {
-        wx.hideNavigationBarLoading() //完成停止加载
-        wx.stopPullDownRefresh()
-      },3000)
+        self.createNum = 0;
+        self.getGoodNum = 0;
+        wx.hideNavigationBarLoading(); //完成停止加载
+        wx.stopPullDownRefresh();
+      }, 1000);
     },
     methods: {
-      goAbout(){
-        console.log('aaa');
-        let self = this
-        // setTimeout(function() {
-        //   self.createNum = 900;
-        //   self.getGoodNum = 100
-        // },2000)
-        // this.$router.push({path: "pages/me/about/main"})
-        wx.navigateTo({url: './about/main?name=wuyanbin&age=24'})
-      }
+      goAbout() {
+        wx.navigateTo({ url: "./about/main?name=wuyanbin&age=24" });
+      },
+      goMyCreate(){
+        wx.showToast({
+          title: '你还啥也没创作',
+          icon: 'none',
+          duration: 2000
+        })
+      },
+      goAdvise(){
+        wx.showToast({
+          title: '还敢有意见,等着吧',
+          icon: 'none',
+          duration: 2000
+        })
+      },
     }
   };
 </script>
@@ -125,7 +151,7 @@
     width: 200rpx;
     height: 200rpx;
     border-radius: 50%;
-    overflow:hidden;
+    overflow: hidden;
     display: block;
     margin: 20rpx;
     margin-top: 50rpx;
