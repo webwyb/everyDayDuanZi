@@ -118,7 +118,7 @@
             },
             {
               type: "image",
-              url: "https://duanzi.fengtianhe.cn/assets/images/tc2.png", //二维码
+              url: "https://duanzi.fengtianhe.cn/assets/images/miniprogram.jpg", //二维码
               top: 443,
               left: 85,
               width: 68,

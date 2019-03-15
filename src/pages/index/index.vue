@@ -14,13 +14,12 @@
             </div>
           </div>
         </div>
-        <!--todo:-->
         <!--用户信息-->
         <div class="cu-list menu menu-avatar">
           <div class="cu-item">
             <!--用户信息-->
             <div class="cu-avatar round lg"
-                 :style="{'background-image':'url(' + 'https://image.weilanwl.com/img/square-4.jpg' + ')'}">
+                 :style="{'background-image':'url(' + 'https://duanzi.fengtianhe.cn/assets/images/avatar.png' + ')'}">
             </div>
             <div class='content flex-sub'>
               <div class='text-grey'>{{nickName}}</div>

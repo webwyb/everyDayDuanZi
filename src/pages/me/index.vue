@@ -7,8 +7,7 @@
       <div class='text-xl margin-top-xs'>
         <open-data type="userNickName"></open-data>
       </div>
-      <!--todo:-->
-      <image src='https://image.weilanwl.com/gif/wave.gif' mode='scaleToFill' class='gif-wave'></image>
+      <image src='https://duanzi.fengtianhe.cn/assets/images/wave.gif' mode='scaleToFill' class='gif-wave'></image>
     </div>
     <!--创作和点赞详情-->
     <div class='padding flex text-center text-grey bg-white shadow-warp'>
@@ -113,7 +112,7 @@
 
 <style scoped>
   .UCenter-bg {
-    background-image: url(https://image.weilanwl.com/color2.0/index.jpg);
+    background-image: url(https://duanzi.fengtianhe.cn/assets/images/bg.png);
     background-size: cover;
     height: 550rpx;
     display: flex;
