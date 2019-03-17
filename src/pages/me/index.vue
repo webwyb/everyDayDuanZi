@@ -42,20 +42,20 @@
     <div class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg">
       <div class="cu-item arrow">
         <div class='content' @click="goMyCreate">
-          <text class='icon-github text-grey'></text>
+          <text class='icon-creativefill text-orange'></text>
           <text class='text-grey'>我的创作</text>
         </div>
       </div>
-      <div class="cu-item arrow" @click="goAdvise">
-        <div class='content'>
+      <view class="cu-item arrow">
+        <button class='cu-btn content' open-type='feedback'>
           <text class='icon-writefill text-cyan'></text>
           <text class='text-grey'>意见反馈</text>
-        </div>
-      </div>
+        </button>
+      </view>
       <div class="cu-item arrow">
         <div class='content' @click="goAbout">
           <text class='icon-github text-grey'></text>
-          <text class='text-grey'>关于每日段子</text>
+          <text class='text-grey'>关于段子hand</text>
         </div>
       </div>
     </div>
@@ -95,13 +95,6 @@
       goMyCreate(){
         wx.showToast({
           title: '你还啥也没创作',
-          icon: 'none',
-          duration: 2000
-        })
-      },
-      goAdvise(){
-        wx.showToast({
-          title: '还敢有意见,等着吧',
           icon: 'none',
           duration: 2000
         })

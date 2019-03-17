@@ -4,7 +4,7 @@
     <div class='div-content'>
       <div>Hi！各位用户~欢迎使用段子hand！</div>
       <div class='margin-top-sm'>
-        作为程序员，没有一个个人项目都不好意思说自己是混互联网圈的。所以两个逗比程序员共同创作了"段子hand"项目，希望我们在瞎搞的同时也能给你带来快乐
+        作为程序员，没有一个个人项目都不好意思说自己是混互联网圈的。所以两个逗比程序员共同创作了"段子hand"项目，希望我们在瞎搞的同时也能给你带来快乐。
       </div>
       <div class='margin-top-sm'>我们对于这个项目还是付出了心血的，尽管目前他看起来还很差。</div>
       <div class='margin-top-sm'>
