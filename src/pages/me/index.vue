@@ -47,6 +47,12 @@
         </div>
       </div>
       <view class="cu-item arrow">
+        <div class='content' @click="goPublishLog">
+          <text class='icon-formfill text-green'></text>
+          <text class='text-grey'>发布日志</text>
+        </div>
+      </view>
+      <view class="cu-item arrow">
         <button class='cu-btn content' open-type='feedback'>
           <text class='icon-writefill text-cyan'></text>
           <text class='text-grey'>意见反馈</text>
@@ -92,13 +98,16 @@
       goAbout() {
         wx.navigateTo({ url: "./about/main?name=wuyanbin&age=24" });
       },
-      goMyCreate(){
-        wx.showToast({
-          title: '你还啥也没创作',
-          icon: 'none',
-          duration: 2000
-        })
+      goPublishLog() {
+        wx.navigateTo({ url: "./log/main" });
       },
+      goMyCreate() {
+        wx.showToast({
+          title: "你还啥也没创作",
+          icon: "none",
+          duration: 2000
+        });
+      }
     }
   };
 </script>
