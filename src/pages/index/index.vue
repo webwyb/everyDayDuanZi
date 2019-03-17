@@ -2,6 +2,7 @@
   <div>
     <!--内容-->
     <!--<button open-type="getUserInfo" lang="zh_CN" @click="onGotUserInfo">获取用户信息</button>-->
+    <official-account></official-account>
     <div class="cu-card case" v-for="item in items" :key="item.id">
       <!--内容信息-->
       <div class="cu-item shadow">

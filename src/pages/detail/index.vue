@@ -37,6 +37,7 @@
     </div>
     <!--返回首页-->
     <div class="goHome" @click="goHome"><span class='icon-home xl text-gray'></span></div>
+    <official-account></official-account>
   </div>
 </template>
 
