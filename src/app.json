@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/tempIndex/main",
     "pages/index/main",
     "pages/me/main",
     "pages/me/about/main",
@@ -21,7 +22,7 @@
     "list": [
       {
         "text": "首页",
-        "pagePath": "pages/index/main",
+        "pagePath": "pages/tempIndex/main",
         "iconPath": "static/tabs/home-green.png",
         "selectedIconPath": "static/tabs/home-active-green.png"
       },
@@ -35,7 +36,7 @@
     "items": [
       {
         "name": "首页",
-        "pagePath": "pages/index/main",
+        "pagePath": "pages/tempIndex/main",
         "icon": "static/tabs/home-green.png",
         "activeIcon": "static/tabs/home-active-green.png"
       },

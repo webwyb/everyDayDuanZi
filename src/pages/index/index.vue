@@ -36,9 +36,9 @@
               </div>
               <!--@click="sharePic(item.id)" -->
               <!--<div style="padding-right: 3px">-->
-                <!--<button open-type="getUserInfo" lang="zh_CN" @click="onGotUserInfo(item)">-->
-                  <!--<span class="icon-pic lg text-gray margin-lr-xs"></span>-->
-                <!--</button>-->
+              <!--<button open-type="getUserInfo" lang="zh_CN" @click="onGotUserInfo(item)">-->
+              <!--<span class="icon-pic lg text-gray margin-lr-xs"></span>-->
+              <!--</button>-->
               <!--</div>-->
               <div>
                 <button open-type="share" :data-id="item.id"><span
@@ -112,16 +112,12 @@
     // 下拉加载更多
     onReachBottom: function() {
       let self = this;
-      if (self.page <= self.totalPage) {
-        self.page = self.page + 1;
-        console.log("我要加载更多数据", self.page);
-        self.isShowLoadMore = true;
-        self.getArticle(self.page).then(() => {
-          self.isShowLoadMore = false;
-        });
-      } else {
-        console.log("无数据了");
-      }
+      self.page = self.page + 1;
+      console.log("我要加载更多数据", self.page);
+      self.isShowLoadMore = true;
+      self.getArticle(self.page).then(() => {
+        self.isShowLoadMore = false;
+      });
     },
     mounted() {
       this.wxlogin();
@@ -142,11 +138,11 @@
           page: page,
           pageSize: 10
         }).then((res) => {
-          self.totalPage = res.data.totalPage;
+          // self.totalPage = res.data.totalPage;
           if (page === 1) {
-            this.items = res.data.lists;
+            this.items = res.data;
           } else {
-            this.items = this.items.concat(res.data.lists);
+            this.items = this.items.concat(res.data);
           }
         }).catch((err) => {
           console.log("请求到的苏剧", err);

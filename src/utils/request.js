@@ -1,7 +1,14 @@
 /**
  * Created by wuyanbin on 2019/3/2.
  */
-const baseApi = "https://duanzi.fengtianhe.cn/api/";
+let baseApi = "";
+console.log("---====", process.env.NODE_ENV);
+if (process.env.NODE_ENV === "development") {
+  baseApi = "http://dev.duanzi.fengtianhe.cn/api/";
+} else if (process.env.NODE_ENV === "production") {
+  baseApi = "https://duanzi.fengtianhe.cn/api/";
+}
+
 const Promise = require("es6-promise").Promise;
 
 function wxPromisify(fn) {
@@ -44,7 +51,7 @@ function getRequest(url, data) {
     data: data,
     header: {
       "Content-Type": "application/json",
-      "token": mpvue.getStorageSync('token') ? mpvue.getStorageSync('token') : ""
+      "token": mpvue.getStorageSync("token") ? mpvue.getStorageSync("token") : ""
     }
   });
 }
@@ -62,7 +69,7 @@ function postRequest(url, data) {
     data: data,
     header: {
       "content-type": "application/x-www-form-urlencoded",
-      "token": mpvue.getStorageSync('token') ? mpvue.getStorageSync('token') : ""
+      "token": mpvue.getStorageSync("token") ? mpvue.getStorageSync("token") : ""
     }
   });
 }
