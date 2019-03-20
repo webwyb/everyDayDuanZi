@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="self_container">
     <div v-for="(item, index) in items" :key="index">
       <div :style="{ position: 'absolute', 'z-index': -index }">
         <movable-area v-if="item.isShow"
@@ -7,9 +7,9 @@
           <movable-view class="movableView"
                         direction="all"
                         inertia="true"
-                        animation="false"
-                        damping="80"
-                        friction="50"
+                        animation="true"
+                        damping="60"
+                        friction="100"
                         :x="item.x"
                         :y="item.y"
                         @change="handleMoveView">
@@ -20,7 +20,7 @@
                 <div class='padding-sm'
                      @touchend="handleTouchArea(item,index)"
                      @touchcancel='handleTouchArea(item,index)'>
-                  <div class='radius text-center shadow-blur bg-gradual-green' style="height:500rpx;overflow-y:scroll;">
+                  <div class='radius text-center shadow-blur bg-gradual-green' style="height:600rpx;overflow-y:scroll;">
                     <div class='padding text-white'>
                       <div class='text-lg text-left'>
                         <wxParse :content="item.content" />
@@ -32,13 +32,16 @@
                 <div class="cu-list menu menu-avatar">
                   <div class="cu-item">
                     <!--用户信息-->
-                    <div class="cu-avatar round lg"
-                         :style="{'background-image':'url(' + 'https://duanzi.fengtianhe.cn/assets/images/avatar.png' + ')'}">
-                    </div>
+                    <image
+                      :src="item.creator ? item.creator.avatar : defaultAvatar"
+                      class="cu-avatar round lg"
+                      mode="aspectFit"
+                      lazy-load="true">
+                    </image>
                     <div class='content flex-sub'>
-                      <div class='text-grey'>{{nickName}}</div>
+                      <div class='text-grey'>{{item.creator ? item.creator.nickname : defaultNickName}}</div>
                       <div class='text-gray text-sm flex justify-between'>
-                        {{createDate}}
+                        {{item.created_at ? item.created_at : defaultCreateDate}}
                       </div>
                     </div>
                     <!--点赞图标-->
@@ -66,22 +69,74 @@
         </movable-area>
       </div>
     </div>
+    <!--底部图片-->
+    <div class="page__ft">
+      <div style="display: flex;flex-direction: row;justify-content: space-around">
+        <image :class="[left ? 'active' : '', 'self_pic']" src="../../../static/images/笑脸.png"/>
+        <image :class="[right ? 'active': '', 'self_pic']" src="../../../static/images/哭脸2.png"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
   import wxParse from "mpvue-wxparse";
+
   export default {
     data() {
       return {
         // x左边的偏移量
         prex: 0,
+        left: false,
+        right: false,
         // 请求到的数据
-        items: [],
+        items: [
+          {
+            id: "1",
+            index: 1,
+            content: "1111",
+            isShow: true,
+            x: 0,
+            y: 0,
+            creator: { nickName: "wuyanbin", avatar: "https://duanzi.fengtianhe.cn/assets/images/avatar.png" },
+            created_at: "2018-12-12"
+          },
+          {
+            id: "1",
+            index: 1,
+            content: "1111",
+            isShow: true,
+            x: 0,
+            y: 0,
+            creator: { nickName: "wuyanbin", avatar: "https://duanzi.fengtianhe.cn/assets/images/avatar.png" },
+            created_at: "2018-12-12"
+          },
+          {
+            id: "1",
+            index: 1,
+            content: "1111",
+            isShow: true,
+            x: 0,
+            y: 0,
+            creator: { nickName: "wuyanbin", avatar: "https://duanzi.fengtianhe.cn/assets/images/avatar.png" },
+            created_at: "2018-12-12"
+          },
+          {
+            id: "2",
+            index: 2,
+            content: "2222",
+            isShow: true,
+            x: 0,
+            y: 0
+            // creator: { nickName: "wuyanbin", avatar: "https://duanzi.fengtianhe.cn/assets/images/avatar.png" },
+            // created_at: "2018-12-12"
+          }
+        ],
         // 当前页数
         page: 0,
-        nickName: "不愿透漏姓名的段友",
-        createDate: "2019-03-01",
+        defaultAvatar: "https://duanzi.fengtianhe.cn/assets/images/avatar.png",
+        defaultNickName: "不愿透漏姓名的段友",
+        defaultCreateDate: "2019-3-15"
       };
     },
     components: {
@@ -100,9 +155,22 @@
         console.log(self.prex);
         console.log("====", index);
         // console.log(e);
-        if (self.prex < -200 || self.prex > 200) {
+        if (self.prex < -100) {
           item.isShow = false;
+          self.left = true;
           self.prex = 0;
+          setTimeout(() => {
+            self.left = false;
+          }, 1000);
+          console.log("item", item);
+          self.getMoreData(index);
+        } else if (self.prex > 100) {
+          item.isShow = false;
+          self.right = true;
+          self.prex = 0;
+          setTimeout(() => {
+            self.right = false;
+          }, 1000);
           console.log("item", item);
           self.getMoreData(index);
         } else {
@@ -144,12 +212,17 @@
       // 查看详情
       goDetail(id) {
         wx.navigateTo({ url: `/pages/detail/main?id=${id}` });
-      },
+      }
     }
   };
 </script>
 
 <style scoped>
+  .self_container{
+    margin-top: 20rpx;
+    display: flex;
+    flex-direction: column;
+  }
   .movableArea {
     height: 160vh;
     width: 260vw;
@@ -164,5 +237,32 @@
     background: transparent;
     left: 80vw;
     top: 30vh;
+  }
+
+  .active {
+    animation: active 1s ease;
+  }
+
+  @keyframes active {
+    0% {
+      transform: scale(0.8);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1.0);
+    }
+  }
+
+  .page__ft {
+    position: fixed;
+    bottom: 100rpx;
+    width: 100vw;
+  }
+
+  .self_pic {
+    width: 100rpx;
+    height: 100rpx;
   }
 </style>
