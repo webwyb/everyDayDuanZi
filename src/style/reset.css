@@ -1,0 +1,21 @@
+/*重置小程序button样式*/
+button {
+  position: relative;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 0;
+  padding-right: 0;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5rpx;
+  line-height: inherit;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+  background-color: transparent
+}
+
+button::after {
+  border: none
+}

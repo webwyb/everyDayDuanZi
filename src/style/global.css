@@ -1,5 +1,5 @@
-@import "./icon.css";
-@import "./colorui.css";
+@import "icon.css";
+@import "colorui.css";
 
 .nav-list {
   display: flex;

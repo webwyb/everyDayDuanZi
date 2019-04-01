@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/create/main",
     "pages/tempIndex/main",
+    "pages/create/main",
     "pages/index/main",
     "pages/me/main",
     "pages/me/about/main",
@@ -23,9 +23,15 @@
     "list": [
       {
         "text": "首页",
-        "pagePath": "pages/create/main",
+        "pagePath": "pages/tempIndex/main",
         "iconPath": "static/tabs/home-green.png",
         "selectedIconPath": "static/tabs/home-active-green.png"
+      },
+      {
+        "text": "创作",
+        "pagePath": "pages/create/main",
+        "iconPath": "static/tabs/create-green.png",
+        "selectedIconPath": "static/tabs/create-active-green.png"
       },
       {
         "text": "我的",
@@ -37,9 +43,15 @@
     "items": [
       {
         "name": "首页",
-        "pagePath": "pages/create/main",
+        "pagePath": "pages/tempIndex/main",
         "icon": "static/tabs/home-green.png",
         "activeIcon": "static/tabs/home-active-green.png"
+      },
+      {
+        "text": "创作",
+        "pagePath": "pages/create/main",
+        "iconPath": "static/tabs/create.png",
+        "selectedIconPath": "static/tabs/create-active-green.png"
       },
       {
         "name": "我的",
