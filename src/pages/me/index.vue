@@ -84,15 +84,14 @@
     },
     onPullDownRefresh: function() {
       let self = this;
-      self.createNum = 10;
-      self.getGoodNum = 10;
       wx.showNavigationBarLoading(); //在标题栏中显示加载
-      setTimeout(function() {
-        self.createNum = 0;
-        self.getGoodNum = 0;
+      self.getUserInfo().then(() => {
         wx.hideNavigationBarLoading(); //完成停止加载
         wx.stopPullDownRefresh();
-      }, 1000);
+      });
+    },
+    mounted() {
+      this.getUserInfo();
     },
     methods: {
       goAbout() {
@@ -102,10 +101,35 @@
         wx.navigateTo({ url: "./log/main" });
       },
       goMyCreate() {
-        wx.showToast({
-          title: "你还啥也没创作",
-          icon: "none",
-          duration: 2000
+        let self = this;
+        wx.showLoading({
+          title: "加载中"
+        });
+        self.$http.getRequest("articles/all", {
+          page: 1,
+          pageSize: 10
+        }).then((res) => {
+          if (res.data.lists) {
+            wx.navigateTo({ url: "/pages/index/main" });
+          } else {
+            wx.showToast({
+              title: "你还啥也没创作",
+              icon: "none",
+              duration: 2000
+            });
+          }
+        }).catch((err) => {
+          console.log("请求到的苏剧", err);
+        }).finally(() => {
+          wx.hideLoading();
+        });
+      },
+      // 获取当前用户的信息
+      async getUserInfo() {
+        let self = this;
+        await self.$http.getRequest("users/info").then((res) => {
+          self.createNum = res.data.count_articles;
+          self.getGoodNum = res.data.count_likes;
         });
       }
     }

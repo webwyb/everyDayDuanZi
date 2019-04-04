@@ -62,7 +62,7 @@
     data() {
       return {
         // 是否认证
-        isAuth: true,
+        isAuth: false,
         content: "",
         TabCur: "0",
         remnant: 200,
@@ -72,7 +72,6 @@
     },
     mounted() {
       // console.log("上一个页面传来的数据", this.$root.$mp);
-      this.wxlogin();
       this.getSetting();
     },
     methods: {
@@ -109,7 +108,6 @@
             content: self.content,
             anonymous: self.isAnonymous ? 1 : 0
           }).then((res) => {
-            console.log("res", res);
             self.content = "";
             wx.showToast({
               title: "发布成功",
@@ -128,7 +126,7 @@
               wx.getUserInfo({
                 success: function(res) {
                   console.log("已经授权了");
-                  console.log(res.userInfo);
+                  // console.log(res.userInfo);
                   self.isAuth = true;
                 }
               });
@@ -142,40 +140,17 @@
       //  获取用户公开数据
       onGotUserInfo(e) {
         let self = this;
-        console.log(e);
         if (e.mp.detail.rawData) {
-          console.log("用户按下了允许");
-          console.log(e.mp.detail);
           self.$http.postRequest("users", {
             iv: e.mp.detail.iv,
             encryptData: e.mp.detail.encryptedData
           }).then((res) => {
-            console.log("登录陈工", res);
             self.isAuth = true;
           });
         } else {
-          console.log("用户按下拒绝");
           self.isAuth = false;
         }
       },
-      // 登录
-      wxlogin() {
-        let self = this;
-        wx.login({
-          success(res) {
-            if (res.code) {
-              // 发起网络请求
-              self.$http.getRequest("users/login", {
-                code: res.code
-              }).then((res) => {
-                mpvue.setStorageSync("token", res.data.token);
-              });
-            } else {
-              console.log("登录失败！" + res.errMsg);
-            }
-          }
-        });
-      }
     }
   };
 </script>

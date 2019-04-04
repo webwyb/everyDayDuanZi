@@ -4,7 +4,7 @@
 let baseApi = "";
 console.log("---====", process.env.NODE_ENV);
 if (process.env.NODE_ENV === "development") {
-  baseApi = "http://dev.duanzi.fengtianhe.cn/api/";
+  baseApi = "https://dev.duanzi.fengtianhe.cn/api/";
 } else if (process.env.NODE_ENV === "production") {
   baseApi = "https://duanzi.fengtianhe.cn/api/";
 }
@@ -68,7 +68,7 @@ function postRequest(url, data) {
     method: "POST",
     data: data,
     header: {
-      "content-type": "application/x-www-form-urlencoded",
+      "content-type": "application/json",
       "token": mpvue.getStorageSync("token") ? mpvue.getStorageSync("token") : ""
     }
   });

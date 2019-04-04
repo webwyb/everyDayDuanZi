@@ -4,8 +4,10 @@
     <!--<button open-type="getUserInfo" lang="zh_CN" @click="onGotUserInfo">获取用户信息</button>-->
     <official-account></official-account>
     <div class="cu-card case" v-for="item in items" :key="item.id">
-      <!--内容信息-->
       <div class="cu-item shadow">
+        <!--消息状态-->
+        <div class='item-status'>{{item.status === 1 ? "审核中" : "审核通过" }}</div>
+        <!--内容信息-->
         <div class='padding-sm' @click="goDetail(item.id)">
           <div class='radius text-center shadow-blur bg-gradual-green'>
             <div class='padding text-white'>
@@ -19,13 +21,16 @@
         <div class="cu-list menu menu-avatar">
           <div class="cu-item">
             <!--用户信息-->
-            <div class="cu-avatar round lg"
-                 :style="{'background-image':'url(' + 'https://duanzi.fengtianhe.cn/assets/images/avatar.png' + ')'}">
-            </div>
+            <image
+              :src="item.creator ? item.creator.avatar : defaultAvatar"
+              class="cu-avatar round lg"
+              mode="aspectFit"
+              lazy-load="true">
+            </image>
             <div class='content flex-sub'>
-              <div class='text-grey'>{{nickName}}</div>
+              <div class='text-grey'>{{item.creator ? item.creator.nickname : defaultNickName}}</div>
               <div class='text-gray text-sm flex justify-between'>
-                {{createDate}}
+                {{item.created_at ? item.created_at : defaultCreateDate}}
               </div>
             </div>
             <!--点赞图标-->
@@ -33,17 +38,18 @@
               <div @click="giveGood(item)" style="padding-right: 8px">
                 <span class='icon-appreciatefill lg text-gray margin-lr-xs' v-if="item.isLike"></span>
                 <span class="icon-appreciate lg text-gray margin-lr-xs" v-else></span>
+                <span>{{item.likes_count}}</span>
               </div>
               <!--@click="sharePic(item.id)" -->
               <!--<div style="padding-right: 3px">-->
-              <!--<button open-type="getUserInfo" lang="zh_CN" @click="onGotUserInfo(item)">-->
-              <!--<span class="icon-pic lg text-gray margin-lr-xs"></span>-->
-              <!--</button>-->
+                <!--<button open-type="getUserInfo" lang="zh_CN" @click="onGotUserInfo(item)">-->
+                  <!--<span class="icon-pic lg text-gray margin-lr-xs"></span>-->
+                <!--</button>-->
               <!--</div>-->
-              <div>
-                <button open-type="share" :data-id="item.id"><span
-                  class="icon-share lg text-gray margin-lr-xs"></span></button>
-              </div>
+              <!--<div>-->
+                <!--<button open-type="share" :data-id="item.id"><span-->
+                  <!--class="icon-share lg text-gray margin-lr-xs"></span></button>-->
+              <!--</div>-->
             </div>
           </div>
         </div>
@@ -52,12 +58,13 @@
     <!--加载更多-->
     <isLoading :isShowLoadMore="isShowLoadMore" />
     <!--置顶-->
-    <div class="toTop" @click="toTop"><span class='icon-top xl text-gray'></span></div>
+    <toTop />
   </div>
 </template>
 
 <script>
   import loading from "@/components/loading";
+  import ToTop from "@/components/toTop";
   import { formatTime } from "@/utils/index";
   import wxParse from "mpvue-wxparse";
 
@@ -72,12 +79,16 @@
         totalPage: 1,
         // 当前用户的信息
         userNickName: "",
-        userAvatarUrl: ""
+        userAvatarUrl: "",
+        defaultAvatar: "https://duanzi.fengtianhe.cn/assets/images/avatar.png",
+        defaultNickName: "不愿透漏姓名的段友",
+        defaultCreateDate: "2019-3-15"
       };
     },
 
     components: {
       isLoading: loading,
+      toTop: ToTop,
       wxParse
     },
     onShareAppMessage(res) {
@@ -134,27 +145,20 @@
         wx.showLoading({
           title: "加载中"
         });
-        await self.$http.getRequest("articles", {
+        await self.$http.getRequest("articles/all", {
           page: page,
           pageSize: 10
         }).then((res) => {
           // self.totalPage = res.data.totalPage;
           if (page === 1) {
-            this.items = res.data;
+            this.items = res.data.lists;
           } else {
-            this.items = this.items.concat(res.data);
+            this.items = this.items.concat(res.data.lists);
           }
         }).catch((err) => {
           console.log("请求到的苏剧", err);
         }).finally(() => {
           wx.hideLoading();
-        });
-      },
-      // 返回顶部
-      toTop() {
-        wx.pageScrollTo({
-          scrollTop: 0,
-          duration: 300
         });
       },
       // 查看详情
@@ -231,19 +235,8 @@
     padding-left: 0;
   }
 
-  .toTop {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    background: #fff;
-    position: fixed;
-    right: 20px;
-    bottom: 40px;
-    z-index: 10;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    border: 1px solid #B9B9B9;
+  .item-status {
+    padding: 20rpx 20rpx;
+    font-size: 30rpx;
   }
 </style>

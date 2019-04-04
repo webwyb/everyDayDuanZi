@@ -1,8 +1,8 @@
 {
   "pages": [
     "pages/tempIndex/main",
-    "pages/create/main",
     "pages/index/main",
+    "pages/create/main",
     "pages/me/main",
     "pages/me/about/main",
     "pages/me/log/main",
