@@ -77,21 +77,17 @@
     methods: {
       // tab
       tabSelect(e) {
-        console.log(e);
         let self = this;
         self.TabCur = e.currentTarget.dataset.id;
       },
       //处理文本改变
       handleTextAreaChange(e) {
-        console.log(e);
-        console.log(e.target.value.length);
         let self = this;
         self.remnant = 200 - e.target.value.length;
         self.content = e.target.value;
       },
       //处理switch的改变
       handleSwitchChange(e) {
-        console.log("change改变", e);
         this.isAnonymous = e.mp.detail.value;
       },
       //发布
@@ -110,7 +106,7 @@
           }).then((res) => {
             self.content = "";
             wx.showToast({
-              title: "发布成功",
+              title: "审核中",
               icon: "success",
               duration: 2000
             });
@@ -125,13 +121,10 @@
             if (res.authSetting["scope.userInfo"]) {
               wx.getUserInfo({
                 success: function(res) {
-                  console.log("已经授权了");
-                  // console.log(res.userInfo);
                   self.isAuth = true;
                 }
               });
             } else {
-              console.log("用户还未授权");
               self.isAuth = false;
             }
           }
@@ -150,7 +143,7 @@
         } else {
           self.isAuth = false;
         }
-      },
+      }
     }
   };
 </script>
@@ -200,7 +193,8 @@
     width: 100%;
     height: 100%;
   }
-  .tip{
+
+  .tip {
     color: gray;
   }
 </style>

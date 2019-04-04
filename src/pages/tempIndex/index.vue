@@ -121,7 +121,7 @@
         console.log('y', self.prey);
         console.log("====", index);
         // console.log(e);
-        if (self.prex < -100 || self.prey < -100) {
+        if (self.prex < -50 || self.prey < -50) {
           item.isShow = false;
           self.left = true;
           self.prex = 0;
@@ -132,7 +132,7 @@
           console.log("item", item);
           console.log("index", index);
           self.getMoreData(index);
-        } else if (self.prex > 100 || self.prey > 100) {
+        } else if (self.prex > 50 || self.prey > 50) {
           item.isShow = false;
           self.right = true;
           self.prex = 0;
@@ -199,10 +199,14 @@
         await wx.login({
           success(res) {
             if (res.code) {
+              wx.showLoading({
+                title: "一大波段子即将来袭"
+              });
               // 发起网络请求
               self.$http.getRequest("users/login", {
                 code: res.code
               }).then((res) => {
+                wx.hideLoading();
                 mpvue.setStorageSync("token", res.data.token);
                 self.getArticle(self.page);
               });
