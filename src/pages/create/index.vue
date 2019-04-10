@@ -20,7 +20,6 @@
             <textarea placeholder="是时候展示真正的技术了"
                       class="self-textArea"
                       maxlength="200"
-                      auto-focus="false"
                       show-confirm-bar="true"
                       adjust-position="false"
                       placeholder-class='self-placeholder'
