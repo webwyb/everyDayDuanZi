@@ -102,27 +102,15 @@
       },
       goMyCreate() {
         let self = this;
-        wx.showLoading({
-          title: "加载中"
-        });
-        self.$http.getRequest("articles/all", {
-          page: 1,
-          pageSize: 10
-        }).then((res) => {
-          if (res.data.lists) {
-            wx.navigateTo({ url: "/pages/index/main" });
-          } else {
-            wx.showToast({
-              title: "你还啥也没创作",
-              icon: "none",
-              duration: 2000
-            });
-          }
-        }).catch((err) => {
-          console.log("请求到的苏剧", err);
-        }).finally(() => {
-          wx.hideLoading();
-        });
+        if (self.createNum > 0) {
+          wx.navigateTo({ url: "/pages/index/main" });
+        } else {
+          wx.showToast({
+            title: "你还啥也没创作",
+            icon: "none",
+            duration: 2000
+          });
+        }
       },
       // 获取当前用户的信息
       async getUserInfo() {

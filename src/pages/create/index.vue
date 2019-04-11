@@ -156,6 +156,7 @@
   .self-textArea {
     height: 500rpx;
     overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
     width: 100vw;
     background: #fff;
     padding: 50rpx 25rpx;

@@ -1,7 +1,6 @@
 <template>
   <div>
     <!--内容-->
-    <!--<button open-type="getUserInfo" lang="zh_CN" @click="onGotUserInfo">获取用户信息</button>-->
     <official-account></official-account>
     <div class="cu-card case" v-for="item in items" :key="item.id">
       <div class="cu-item shadow">
@@ -131,7 +130,6 @@
       });
     },
     mounted() {
-      this.wxlogin();
       this.getArticle(1);
     },
     methods: {
@@ -164,48 +162,6 @@
       // 查看详情
       goDetail(id = "1") {
         wx.navigateTo({ url: `/pages/detail/main?id=${id}` });
-      },
-      // 登录
-      wxlogin() {
-        let self = this;
-        wx.login({
-          success(res) {
-            if (res.code) {
-              // 发起网络请求
-              self.$http.getRequest("users/login", {
-                code: res.code
-              }).then((res) => {
-                mpvue.setStorageSync("token", res.data.token);
-              });
-            } else {
-              console.log("登录失败！" + res.errMsg);
-            }
-          }
-        });
-      },
-      //  获取用户公开数据
-      onGotUserInfo(item) {
-        let self = this;
-        if (!mpvue.getStorageSync("nickName") || !mpvue.setStorageSync("avatarUrl")) {
-          wx.getUserInfo({
-            withCredentials: true,
-            success(res) {
-              console.log("获取的用户信息", res);
-              self.userNickName = res.userInfo.nickName;
-              self.userAvatarUrl = res.userInfo.avatarUrl;
-              mpvue.setStorageSync("nickName", res.userInfo.nickName);
-              mpvue.setStorageSync("avatarUrl", res.userInfo.avatarUrl);
-              self.$http.postRequest("users", {
-                iv: res.iv,
-                encryptData: res.encryptedData
-              }).then((res) => {
-                console.log("登录陈工", res);
-              });
-            }
-          });
-        } else {
-          self.sharePic(item.id, self.userNickName, self.userAvatarUrl);
-        }
       },
       // 点赞
       giveGood(item) {
