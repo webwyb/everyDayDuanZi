@@ -23,7 +23,7 @@
                   <div class="cu-item">
                     <!--用户信息-->
                     <image :src="item.creator ? item.creator.avatar : defaultAvatar" class="cu-avatar round lg"
-                      mode="aspectFit" lazy-load="true" />
+                           mode="aspectFit" lazy-load="true"></image>
                     <div class='content flex-sub'>
                       <div class='text-grey'>{{item.creator ? item.creator.nickname : defaultNickName}}</div>
                       <div class='text-gray text-sm flex justify-between'>
