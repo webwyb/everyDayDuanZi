@@ -22,6 +22,11 @@
       return {
         items: [
           {
+            version: "v2.0.1",
+            publishDate: "2019/04/12",
+            list: ["1.修改了部分bug", "2.优化了一点点代码"]
+          },
+          {
             version: "v2.0.0",
             publishDate: "2019/04/05",
             tag: '断魂版',
