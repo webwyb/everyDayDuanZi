@@ -60,9 +60,9 @@
     <div class="page__ft">
       <div style="display: flex;flex-direction: row;justify-content: space-around">
         <image :class="[left ? 'active' : '', 'self_pic']"
-          src="https://dev.duanzi.fengtianhe.cn/assets/images/like.png"></image>
+          src="https://duanzi.fengtianhe.cn/assets/images/like.png"></image>
         <image :class="[right ? 'active': '', 'self_pic']"
-          src="https://dev.duanzi.fengtianhe.cn/assets/images/dislike.png"></image>
+          src="https://duanzi.fengtianhe.cn/assets/images/dislike.png"></image>
       </div>
     </div>
   </div>
