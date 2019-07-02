@@ -28,12 +28,6 @@
         "selectedIconPath": "static/tabs/home-active-green.png"
       },
       {
-        "text": "创作",
-        "pagePath": "pages/create/main",
-        "iconPath": "static/tabs/create-green.png",
-        "selectedIconPath": "static/tabs/create-active-green.png"
-      },
-      {
         "text": "我的",
         "pagePath": "pages/me/main",
         "iconPath": "static/tabs/me-green.png",
@@ -46,12 +40,6 @@
         "pagePath": "pages/tempIndex/main",
         "icon": "static/tabs/home-green.png",
         "activeIcon": "static/tabs/home-active-green.png"
-      },
-      {
-        "text": "创作",
-        "pagePath": "pages/create/main",
-        "iconPath": "static/tabs/create.png",
-        "selectedIconPath": "static/tabs/create-active-green.png"
       },
       {
         "name": "我的",

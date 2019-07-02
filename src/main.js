@@ -10,6 +10,11 @@ App.mpType = "app";
 import http from "./utils/request";
 // 将API绑定为全局
 Vue.prototype.$http = http;
+// fundebug
+var fundebug = require("fundebug-wxjs");
+fundebug.init({
+  apikey: "7a273523fc935bfe284721a32a29a5539fcefbbb5d2b6d017b9c151935d3034c"
+});
 
 const app = new Vue(App);
 app.$mount();

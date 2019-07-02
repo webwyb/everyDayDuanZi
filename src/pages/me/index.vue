@@ -46,6 +46,12 @@
           <text class='text-grey'>我的创作</text>
         </div>
       </div>
+      <div class="cu-item arrow">
+        <div class='content' @click="goToCreate">
+          <text class='icon-skinfill text-pink'></text>
+          <text class='text-grey'>我要创作</text>
+        </div>
+      </div>
       <view class="cu-item arrow">
         <div class='content' @click="goPublishLog">
           <text class='icon-formfill text-green'></text>
@@ -54,13 +60,19 @@
       </view>
       <view class="cu-item arrow">
         <button class='cu-btn content' open-type='feedback'>
-          <text class='icon-writefill text-cyan'></text>
+          <text class='icon-writefill text-olive'></text>
           <text class='text-grey'>意见反馈</text>
+        </button>
+      </view>
+      <view class="cu-item arrow">
+        <button class='cu-btn content' open-type='contact'>
+          <text class='icon-weixin text-cyan'></text>
+          <text class='text-grey'>聊骚客服</text>
         </button>
       </view>
       <div class="cu-item arrow">
         <div class='content' @click="goAbout">
-          <text class='icon-github text-grey'></text>
+          <text class='icon-github text-gray'></text>
           <text class='text-grey'>关于段子hand</text>
         </div>
       </div>
@@ -100,6 +112,7 @@
       goPublishLog() {
         wx.navigateTo({ url: "./log/main" });
       },
+      // 查看创作的记录
       goMyCreate() {
         let self = this;
         if (self.createNum > 0) {
@@ -111,6 +124,10 @@
             duration: 2000
           });
         }
+      },
+      // 我要创作
+      goToCreate(){
+        wx.navigateTo({ url: "/pages/create/main" });
       },
       // 获取当前用户的信息
       async getUserInfo() {
