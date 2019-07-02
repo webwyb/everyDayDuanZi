@@ -46,12 +46,12 @@
           <text class='text-grey'>我的创作</text>
         </div>
       </div>
-      <div class="cu-item arrow">
-        <div class='content' @click="goToCreate">
-          <text class='icon-skinfill text-pink'></text>
-          <text class='text-grey'>我要创作</text>
-        </div>
-      </div>
+      <!--<div class="cu-item arrow">-->
+        <!--<div class='content' @click="goToCreate">-->
+          <!--<text class='icon-skinfill text-pink'></text>-->
+          <!--<text class='text-grey'>我要创作</text>-->
+        <!--</div>-->
+      <!--</div>-->
       <view class="cu-item arrow">
         <div class='content' @click="goPublishLog">
           <text class='icon-formfill text-green'></text>
