@@ -53,7 +53,7 @@
           views: [
             {
               type: "image",
-              url: "https://duanzi.fengtianhe.cn/assets/images/share.png", // 背景
+              url: "https://6475-duanzi-fc5318-1258744718.tcb.qcloud.la/bg.png?sign=acf457434ea9affcc7f40f465ff01986&t=1607161192", // 背景
               top: 0,
               left: 0,
               width: 375,
@@ -69,7 +69,7 @@
             },
             {
               type: "image",
-              url: "https://duanzi.fengtianhe.cn/assets/images/tc1.png", //头像框
+              url: "https://6475-duanzi-fc5318-1258744718.tcb.qcloud.la/bg.png?sign=acf457434ea9affcc7f40f465ff01986&t=1607161192", //头像框
               top: 27.5,
               left: 29,
               width: 55,
@@ -96,7 +96,7 @@
             },
             {
               type: "image",
-              url: "https://duanzi.fengtianhe.cn/assets/images/tc2.png", // 商品图片
+              url: "https://6475-duanzi-fc5318-1258744718.tcb.qcloud.la/bg.png?sign=acf457434ea9affcc7f40f465ff01986&t=1607161192", // 商品图片
               top: 136,
               left: 42.5,
               width: 290,
@@ -118,7 +118,7 @@
             },
             {
               type: "image",
-              url: "https://duanzi.fengtianhe.cn/assets/images/miniprogram.jpg", //二维码
+              url: "https://6475-duanzi-fc5318-1258744718.tcb.qcloud.la/wxacode_default_openapi_page.jpeg?sign=6f8684b33371a8a235db349bb21a1c45&t=1607161241", //二维码
               top: 443,
               left: 85,
               width: 68,

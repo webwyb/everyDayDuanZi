@@ -36,7 +36,7 @@
     //          }
     //        });
     //        wx.request({
-    //          url: "https://duanzi.fengtianhe.cn/api/uses/login",
+    //          url: "",
     //          data: {
     //            code: res.code
     //          }
@@ -63,10 +63,6 @@
     // log() {
     //   console.log(`log at:${Date.now()}`);
     // }
-    onError(err) {
-      var fundebug = require("fundebug-wxjs");
-      fundebug.notifyError(err);
-    },
   };
 </script>
 

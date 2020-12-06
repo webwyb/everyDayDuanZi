@@ -4,21 +4,21 @@
 let baseApi = "";
 console.log("---====", process.env.NODE_ENV);
 if (process.env.NODE_ENV === "development") {
-  baseApi = "https://dev.duanzi.fengtianhe.cn/api/";
+  baseApi = "https://db.collection.where.get/";
 } else if (process.env.NODE_ENV === "production") {
-  baseApi = "https://duanzi.fengtianhe.cn/api/";
+  baseApi = "https://db.collection.where.get/";
 }
 
 const Promise = require("es6-promise").Promise;
 
 function wxPromisify(fn) {
-  return function(obj = {}) {
+  return function (obj = {}) {
     return new Promise((resolve, reject) => {
-      obj.success = function(res) {
+      obj.success = function (res) {
         //成功 (只返回res.data)
         resolve(res.data);
       };
-      obj.fail = function(res) {
+      obj.fail = function (res) {
         //失败
         reject(res);
       };
@@ -28,13 +28,14 @@ function wxPromisify(fn) {
 }
 
 //无论promise对象最后状态如何都会执行
-Promise.prototype.finally = function(callback) {
+Promise.prototype.finally = function (callback) {
   let P = this.constructor;
   return this.then(
-    value => P.resolve(callback()).then(() => value),
-    reason => P.resolve(callback()).then(() => {
-      throw reason;
-    })
+    (value) => P.resolve(callback()).then(() => value),
+    (reason) =>
+      P.resolve(callback()).then(() => {
+        throw reason;
+      })
   );
 };
 
@@ -51,8 +52,8 @@ function getRequest(url, data) {
     data: data,
     header: {
       "Content-Type": "application/json",
-      "token": mpvue.getStorageSync("token") ? mpvue.getStorageSync("token") : ""
-    }
+      token: mpvue.getStorageSync("token") ? mpvue.getStorageSync("token") : "",
+    },
   });
 }
 
@@ -69,8 +70,8 @@ function postRequest(url, data) {
     data: data,
     header: {
       "content-type": "application/json",
-      "token": mpvue.getStorageSync("token") ? mpvue.getStorageSync("token") : ""
-    }
+      token: mpvue.getStorageSync("token") ? mpvue.getStorageSync("token") : "",
+    },
   });
 }
 
@@ -103,17 +104,17 @@ function uploadFile(url, files, name, data) {
       filePath: files,
       name: name,
       formData: data,
-      success: (res => {
+      success: (res) => {
         if (res.statusCode === 200) {
           //200: 服务端业务处理正常结束
           resolve(res);
         } else {
           reject(res);
         }
-      }),
-      fail: (res => {
+      },
+      fail: (res) => {
         reject(res);
-      })
+      },
     });
   });
 }
@@ -122,5 +123,5 @@ module.exports = {
   postRequest: postRequest,
   getRequest: getRequest,
   getRquestUrl: getRquestUrl,
-  uploadFile: uploadFile
+  uploadFile: uploadFile,
 };

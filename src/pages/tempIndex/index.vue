@@ -1,19 +1,20 @@
 <template>
   <div class="self_container">
     <div v-for="(item, index) in items" :key="index">
-      <div :style="{ position: 'absolute', 'z-index': -index }">
+      <div :style="{ position: 'absolute', 'z-index': -index}">
         <movable-area v-if="item.isShow" class="movableArea">
-          <movable-view class="movableView" direction="all" inertia="true" animation="true" damping="60" friction="100"
-            :x="item.x" :y="item.y" @change="handleMoveView">
+          <movable-view class="movableView" direction="horizontal" inertia="true" animation="true" damping="60" friction="100"
+            :x="item.x"
+            :y="item.y" 
+            @change="(e)=>handleMoveView(e, item, index)">
             <div class="cu-card case">
               <div class="cu-item shadow">
                 <!--内容信息-->
-                <div class='padding-sm' @touchend="handleTouchArea(item,index)"
-                  @touchcancel='handleTouchArea(item,index)'>
+                <div class='padding-sm'>
                   <div class='radius text-center shadow-blur bg-gradual-green' style="height:580rpx;overflow-y:scroll;">
                     <div class='padding text-white'>
                       <div class='text-lg text-left'>
-                        <wxParse :content="item.content" />
+                        <rich-text :nodes="item.content"></rich-text>
                       </div>
                     </div>
                   </div>
@@ -43,7 +44,7 @@
                       <!--</button>-->
                       <!--</div>-->
                       <div>
-                        <button open-type="share" :data-id="item.id">
+                        <button open-type="share" :data-id="item._id">
                           <span class="icon-share lg text-gray margin-lr-xs"></span>
                         </button>
                       </div>
@@ -60,17 +61,16 @@
     <div class="page__ft">
       <div style="display: flex;flex-direction: row;justify-content: space-around">
         <image :class="[left ? 'active' : '', 'self_pic']"
-          src="https://duanzi.fengtianhe.cn/assets/images/like.png"></image>
+          src="https://6475-duanzi-fc5318-1258744718.tcb.qcloud.la/like.png?sign=cce686f421839bd519586c3fad4d4aab&t=1607075071"></image>
         <image :class="[right ? 'active': '', 'self_pic']"
-          src="https://duanzi.fengtianhe.cn/assets/images/dislike.png"></image>
+          src="https://6475-duanzi-fc5318-1258744718.tcb.qcloud.la/dislike.png?sign=d98b2c7cf78a6bd83bc5ead2b19a7ec7&t=1607075050"></image>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import wxParse from "mpvue-wxparse";
-
+import { debounce } from "@/utils/index";
 export default {
   data() {
     return {
@@ -82,28 +82,20 @@ export default {
       right: false,
       // 请求到的数据
       items: [],
-      // 当前页数
-      page: 0,
-      defaultAvatar: "https://duanzi.fengtianhe.cn/assets/images/avatar.png",
+      pageIndex: 0,   // 当前页数
+      pageSize: 10, //页面尺寸
+      defaultAvatar: "https://6475-duanzi-fc5318-1258744718.tcb.qcloud.la/like.png",
       defaultNickName: "不愿透漏姓名的段友",
-      defaultCreateDate: "2019-3-15"
+      defaultCreateDate: "2020-12-5",
     };
   },
-  components: {
-    wxParse
-  },
   mounted() {
-    this.wxlogin().then(() => {
-      console.log("登录成功");
-    });
+    this.getArticle(0);
   },
   onShareAppMessage(res) {
-    // wx.showLoading({
-    //   title: "加载中"
-    // });
     return {
       title: "每一个段子都值得被尊重",
-      path: `pages/tempIndex/main?id=${res.target.dataset.id}`,
+      path: `pages/tempIndex/main?id=${res.target.dataset._id}`,
       success: function(res) {
         // 转发成功
         // wx.hideLoading()
@@ -117,66 +109,58 @@ export default {
     };
   },
   methods: {
-    handleMoveView(e) {
+    /**
+     * 处理移动的模块
+     *  监听onchang ==> 获取到 x,y(防抖、异步任务)
+     *  监听touchend ==> 决定如何处理当前item，取消 or 下一个
+     * 
+     *  @touchend="handleTouchArea(item,index)"
+        @touchcancel='handleTouchArea(item,index)'
+     */
+    handleMoveView: debounce(async function(e, item, index){
       let self = this;
       self.prex = e.target.x;
       self.prey = e.target.y;
-    },
-    handleTouchArea(item, index) {
-      let self = this;
-      console.log("x", self.prex);
-      console.log("y", self.prey);
-      console.log("====", index);
-      // console.log(e);
-      if (self.prex < -50 || self.prey < -50) {
+      if (self.prex < -50) {
         item.isShow = false;
-        self.left = true;
-        self.prex = 0;
-        self.giveGoodOrHate(item, 1);
-        setTimeout(() => {
-          self.left = false;
-        }, 1000);
-        console.log("item", item);
-        console.log("index", index);
-        self.getMoreData(index);
-      } else if (self.prex > 50 || self.prey > 50) {
+        self.handleBottomAnimation('left')
+      } else if (self.prex > 50) {
         item.isShow = false;
-        self.right = true;
-        self.prex = 0;
-        self.giveGoodOrHate(item, 2);
-        setTimeout(() => {
-          self.right = false;
-        }, 1000);
-        console.log("item", item);
-        console.log("index", index);
-        self.getMoreData(index);
-      } else {
-        item.x = 0;
-        item.y = 0;
-        self.prex = 0;
-        self.prey = 0;
+        self.handleBottomAnimation('right')
       }
+      console.log('移动改变的坐标', e, item);
+      self.getMoreData(index);
+    },200),
+    handleTouchArea(e, item, index){
+      console.log(e);
+      console.log(item, index);
+    },
+    // 处理底部的动画效果
+    handleBottomAnimation(dire){
+      let self = this;
+      self[dire] = true;
+      setTimeout(() => {
+        self[dire] = false;
+      }, 1000);
     },
     // 获取更多数据
     getMoreData(index) {
       let self = this;
-      if (index % 5 === 2) {
-        self.page = self.page + 1;
-        self.getArticle(self.page);
+      if ((index+1) % self.pageSize === 0) {
+        self.pageIndex = self.pageIndex + 1;
+        self.getArticle(self.pageIndex);
       }
+      return false;
     },
     // 获取文章
-    getArticle(page) {
+    getArticle(pageIndex) {
       let self = this;
-      // wx.showLoading({
-      //   title: "加载中"
-      // });
-      self.$http
-        .getRequest("articles", {
-          page: page,
-          pageSize: 5
-        })
-        .then(res => {
+      wx.showLoading({
+        title: "加载中"
+      });
+      wx.cloud.database().collection('articles').skip(pageIndex * self.pageSize).limit(self.pageSize).get({
+        success: res => {
+          wx.hideLoading();
           let tempArr = [];
           res.data.map(item => {
             let tempItem = Object.assign(item, {
@@ -186,62 +170,24 @@ export default {
             });
             tempArr.push(tempItem);
           });
-          this.items = this.items.concat(tempArr);
-        })
-        .catch(err => {
-          console.log("请求到的苏剧", err);
-        })
-        .finally(() => {
-          // wx.hideLoading();
-        });
-    },
-    // 点赞 or 踩 1:点赞 2:点踩
-    giveGoodOrHate(item, type) {
-      let self = this;
-      if (!item.isLike) {
-        self.$http
-          .postRequest(`articles/like/${item.id}`, {
-            type: type
+          self.items = self.items.concat(tempArr);
+        },
+        fail: err => {
+          wx.hideLoading();
+          wx.showToast({
+            icon: 'none',
+            title: '查询记录失败'
           })
-          .then(() => {
-            item.isLike = true;
-          });
-      } else {
-        console.log("已经喜欢了");
-      }
+        },
+      })
     },
-    // 登录
-    async wxlogin() {
-      let self = this;
-      await wx.login({
-        success(res) {
-          if (res.code) {
-            wx.showLoading({
-              title: "一大波段子来袭"
-            });
-            // 发起网络请求
-            self.$http
-              .getRequest("users/login", {
-                code: res.code
-              })
-              .then(res => {
-                wx.hideLoading();
-                mpvue.setStorageSync("token", res.data.token);
-                self.getArticle(self.page);
-              });
-          } else {
-            console.log("登录失败！" + res.errMsg);
-          }
-        }
-      });
-    }
   }
 };
 </script>
 
 <style scoped>
 .self_container {
-  margin-top: 10rpx;
+  margin-top: 50rpx;
   display: flex;
   flex-direction: column;
 }

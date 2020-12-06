@@ -11,7 +11,7 @@
           <div class='radius text-center shadow-blur bg-gradual-green'>
             <div class='padding text-white'>
               <div class='text-lg text-left'>
-                <wxParse :content="item.content" />
+                {{item.content}}
               </div>
             </div>
           </div>
@@ -65,7 +65,6 @@
   import loading from "@/components/loading";
   import ToTop from "@/components/toTop";
   import { formatTime } from "@/utils/index";
-  import wxParse from "mpvue-wxparse";
 
   export default {
     data() {
@@ -79,7 +78,7 @@
         // 当前用户的信息
         userNickName: "",
         userAvatarUrl: "",
-        defaultAvatar: "https://duanzi.fengtianhe.cn/assets/images/avatar.png",
+        defaultAvatar: "https://6475-duanzi-fc5318-1258744718.tcb.qcloud.la/my-image.png?sign=69de71f60b859c68a9d078ef86015de9&t=1607161264",
         defaultNickName: "不愿透漏姓名的段友",
         defaultCreateDate: "2019-3-15"
       };
@@ -88,7 +87,6 @@
     components: {
       isLoading: loading,
       toTop: ToTop,
-      wxParse
     },
     onShareAppMessage(res) {
       // wx.showLoading({
@@ -130,7 +128,7 @@
       });
     },
     mounted() {
-      this.getArticle(1);
+      // this.getArticle(1);
     },
     methods: {
       // 生成图片

@@ -10,10 +10,13 @@ App.mpType = "app";
 import http from "./utils/request";
 // 将API绑定为全局
 Vue.prototype.$http = http;
-// fundebug
-var fundebug = require("fundebug-wxjs");
-fundebug.init({
-  apikey: "7a273523fc935bfe284721a32a29a5539fcefbbb5d2b6d017b9c151935d3034c"
+// 添加云 初始化环境 id
+wx.cloud.init({
+  env:
+    process.env.NODE_ENV === "development"
+      ? "duanzi-fc5318"
+      : "duanzi-prod-9gti00gb11d1ddf6",
+  traceUser: true,
 });
 
 const app = new Vue(App);

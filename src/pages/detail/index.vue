@@ -7,7 +7,7 @@
           <div class='radius text-center shadow-blur bg-gradual-green'>
             <div class='padding text-white'>
               <div class='text-lg text-left'>
-                <wxParse :content="content" />
+                {{content}}
               </div>
             </div>
           </div>
@@ -42,7 +42,6 @@
 </template>
 
 <script>
-  import wxParse from "mpvue-wxparse";
 
   export default {
     data() {
@@ -52,9 +51,6 @@
         createDate: "2019-03-01",
         id: "",
       };
-    },
-    components: {
-      wxParse
     },
     onShareAppMessage() {
       // wx.showLoading({

@@ -7,7 +7,7 @@
       <div class='text-xl margin-top-xs'>
         <open-data type="userNickName"></open-data>
       </div>
-      <image src='https://duanzi.fengtianhe.cn/assets/images/wave.gif' mode='scaleToFill' class='gif-wave'></image>
+      <image src='https://6475-duanzi-fc5318-1258744718.tcb.qcloud.la/wave.gif' mode='scaleToFill' class='gif-wave'></image>
     </div>
     <!--创作和点赞详情-->
     <div class='padding flex text-center text-grey bg-white shadow-warp'>
@@ -46,12 +46,12 @@
           <text class='text-grey'>我的创作</text>
         </div>
       </div>
-      <!--<div class="cu-item arrow">-->
-        <!--<div class='content' @click="goToCreate">-->
-          <!--<text class='icon-skinfill text-pink'></text>-->
-          <!--<text class='text-grey'>我要创作</text>-->
-        <!--</div>-->
-      <!--</div>-->
+      <div class="cu-item arrow">
+        <div class='content' @click="goToCreate">
+          <text class='icon-skinfill text-pink'></text>
+          <text class='text-grey'>我要创作</text>
+        </div>
+      </div>
       <view class="cu-item arrow">
         <div class='content' @click="goPublishLog">
           <text class='icon-formfill text-green'></text>
@@ -87,8 +87,8 @@
     name: "index",
     data() {
       return {
-        createNum: 0,
-        getGoodNum: 0
+        createNum: 666,
+        getGoodNum: 666
       };
     },
     components: {
@@ -97,13 +97,16 @@
     onPullDownRefresh: function() {
       let self = this;
       wx.showNavigationBarLoading(); //在标题栏中显示加载
-      self.getUserInfo().then(() => {
-        wx.hideNavigationBarLoading(); //完成停止加载
+      setTimeout(()=>{
         wx.stopPullDownRefresh();
-      });
+      }, 2000)
+      // self.getUserInfo().then(() => {
+      //   wx.hideNavigationBarLoading(); //完成停止加载
+      //   wx.stopPullDownRefresh();
+      // });
     },
     mounted() {
-      this.getUserInfo();
+      // this.getUserInfo();
     },
     methods: {
       goAbout() {
@@ -143,7 +146,7 @@
 
 <style scoped>
   .UCenter-bg {
-    background-image: url(https://duanzi.fengtianhe.cn/assets/images/bg.png);
+    background-image: url(https://6475-duanzi-fc5318-1258744718.tcb.qcloud.la/bg.png?sign=acf457434ea9affcc7f40f465ff01986&t=1607161192);
     background-size: cover;
     height: 550rpx;
     display: flex;

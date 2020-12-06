@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="isAuth">
+    <div>
       <!--tab 切换-->
       <scroll-view scroll-x class="bg-green nav text-center">
         <view class='flex text-center'>
@@ -44,14 +44,14 @@
         </button>
       </div>
     </div>
-    <div v-else class="user-login-container">
+    <!-- <div v-else class="user-login-container">
       <button open-type="getUserInfo" @getuserinfo="onGotUserInfo">
         <div class='user-avatar'>
           <img src="../../../static/images/avatar.png" alt="">
         </div>
         <div class="tip">点击登录</div>
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -61,7 +61,7 @@
     data() {
       return {
         // 是否认证
-        isAuth: false,
+        isAuth: true,
         content: "",
         TabCur: "0",
         remnant: 200,
@@ -71,7 +71,7 @@
     },
     mounted() {
       // console.log("上一个页面传来的数据", this.$root.$mp);
-      this.getSetting();
+      // this.getSetting();
     },
     methods: {
       // tab
@@ -99,17 +99,32 @@
             duration: 2000
           });
         } else {
-          self.$http.postRequest("articles", {
-            content: self.content,
-            anonymous: self.isAnonymous ? 1 : 0
-          }).then((res) => {
-            self.content = "";
-            wx.showToast({
-              title: "审核中",
-              icon: "success",
-              duration: 2000
-            });
-          });
+          const db = wx.cloud.database()
+          db.collection('articles').add({
+            data: {
+              content: self.content,
+              creator:{
+                  avatar:"https://6475-duanzi-fc5318-1258744718.tcb.qcloud.la/avatar.png?sign=4d13a68b88da2b3c116340f72faa5f53&t=1607076202",
+                  created_at: new Date(),
+                  nickname:"不方便透漏姓名"
+              }
+            },
+            success: res => {
+              // 在返回结果中会包含新创建的记录的 _id
+              wx.showToast({
+                title: '新增记录成功',
+              })
+              self.content = '';
+              console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
+            },
+            fail: err => {
+              wx.showToast({
+                icon: 'none',
+                title: '新增记录失败'
+              })
+              console.error('[数据库] [新增记录] 失败：', err)
+            }
+          })
         }
       },
       // 进入查看用户是否授权

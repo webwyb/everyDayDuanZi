@@ -22,6 +22,12 @@
       return {
         items: [
           {
+            version: "v3.0.0",
+            publishDate: "2020/12/05",
+            tag: '复活版',
+            list: ["1.起死复生", "2.后端使用云开发承载", "3.优化了使用体验"]
+          },
+          {
             version: "v2.0.1",
             publishDate: "2019/04/12",
             list: ["1.修改了部分bug", "2.优化了一点点代码"]
